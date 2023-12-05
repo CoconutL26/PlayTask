@@ -1,12 +1,14 @@
 package com.jnu.student;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -14,27 +16,27 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        TextView textView1 = findViewById(R.id.textView1);
-        TextView textView2 = findViewById(R.id.textView2);
-        Button button = findViewById(R.id.button);
-        textView1.setText(getString(R.string.hello_world));
-        textView2.setText(getString(R.string.jnu));
+        setContentView(R.layout.layout);
+//        TextView textView = findViewById(R.id.text_vciew_hellow_world);
+//        textView.setText(getString(R.string.hello_world));
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        button.setOnClickListener(v -> {
-            String text1 = textView1.getText().toString();
-            String text2 = textView2.getText().toString();
-
-            textView1.setText(text2);
-            textView2.setText(text1);
-
-            Toast.makeText(MainActivity.this, "交换成功", Toast.LENGTH_SHORT).show();
-
-            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-            builder.setMessage("交换成功")
-                    .setPositiveButton("确定", (dialog, id) -> dialog.dismiss());
-            AlertDialog dialog = builder.create();
-            dialog.show();
-        });
+        MyAdapter adapter = new MyAdapter(getListBooks());
+        recyclerView.setAdapter(adapter);
     }
+
+    public List<Book> getListBooks(){
+        List<Book> BookList = new ArrayList<>();
+        BookList.add(new Book("软件项目管理案例教程（第四版）",R.drawable.book_1));
+        BookList.add(new Book("创新工程实践",R.drawable.book_2));
+        BookList.add(new Book("信息安全教学基础（第二版）",R.drawable.book_3));
+        return BookList;
+    }
+
+
+
 }
+
+
+
