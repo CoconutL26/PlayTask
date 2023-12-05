@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
                 case 1:
                     return WebViewFragment.newInstance();
                 case 2:
-//                    return TecentMapFragment.newInstance();
+                    return TencentMapFragment.newInstance();
 
             }
             return LibraryListFragment.newInstance();
