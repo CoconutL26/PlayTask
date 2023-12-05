@@ -10,118 +10,68 @@ import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
+
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-
-    private RecyclerView recyclerView;
-    private MyAdapter adapter;
-    private ActivityResultLauncher<Intent> addBookLauncher;
-    private ActivityResultLauncher<Intent> editBookLauncher;
-    private List<Book> bookList = getListBooks();
+    private String []tabHeaderStrings = {"图书","新闻","地图"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout);
-//        TextView textView = findViewById(R.id.text_vciew_hellow_world);
-//        textView.setText(getString(R.string.hello_world));
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
-        recyclerView.setLongClickable(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        adapter = new MyAdapter(bookList);
-        recyclerView.setAdapter(adapter);
-
-        registerForContextMenu(recyclerView);
-        //添加书籍的启动器
-        addBookLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    if (result.getResultCode() == Activity.RESULT_OK)
-                    {
-                        Intent data = result.getData();
-                        if (data != null) {
-                            String title = data.getStringExtra("title");
-                            bookList.add(new Book(title, R.drawable.book_2));
-                            adapter.notifyItemInserted(bookList.size());
-                        }
-                    }
-                    else if (result.getResultCode() == Activity.RESULT_CANCELED) {
-                        //取消操作
-                    }
-                }
-        );
-
-        //修改书籍的启动器
-        editBookLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                result -> {
-                    if (result.getResultCode() == Activity.RESULT_OK)
-                    {
-                        Intent data = result.getData();
-                        if (data != null) {
-                            String title = data.getStringExtra("title");
-                            int coverResourceId = data.getIntExtra("cover",R.drawable.book_2);
-                            int id = data.getIntExtra("id",0);
-                            bookList.set(id, new Book(title, coverResourceId));
-                            adapter.notifyItemChanged(id);
-                        }
-                    }
-                    else if (result.getResultCode() == Activity.RESULT_CANCELED) {
-                        //取消操作
-                    }
-                }
-        );
+        setContentView(R.layout.activity_main);
+        // 获取ViewPager2和TabLayout的实例
+        ViewPager2 viewPager = findViewById(R.id.view_pager);
+        TabLayout tabLayout = findViewById(R.id.tab_layout);
+        // 创建适配器
+        FragmentAdapter fragmentAdapter = new FragmentAdapter(getSupportFragmentManager(), getLifecycle());
+        viewPager.setAdapter(fragmentAdapter);
+        // 将TabLayout和ViewPager2进行关联
+        new TabLayoutMediator(tabLayout, viewPager,
+                (tab, position) -> tab.setText(tabHeaderStrings[position])
+        ).attach();
     }
 
-    @Override
-    public boolean onContextItemSelected(MenuItem item){
-//        AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMemuInfo();
-        Toast.makeText(this,"clicked"+item.getOrder(),Toast.LENGTH_SHORT).show();
-        switch (item.getItemId()){
-            case 0:
-                // add
-                Intent addIntent = new Intent(MainActivity.this, AddBook.class);
-                addBookLauncher.launch(addIntent);
-                break;
-            case 1:
-                //delete
-                bookList.remove(item.getOrder());
-                adapter.notifyItemRemoved(item.getOrder());
-
-                break;
-            case 2:
-                //edit
-                Intent editIntent = new Intent(MainActivity.this, EditBook.class);
-                editIntent.putExtra("id",item.getOrder());
-                editIntent.putExtra("title", bookList.get(item.getOrder()).getTitle());
-                editIntent.putExtra("cover", bookList.get(item.getOrder()).getCoverResource());
-                editBookLauncher.launch(editIntent);
-                break;
-            default:
-                return super.onContextItemSelected(item);
+    public class FragmentAdapter extends FragmentStateAdapter {
+        private static final int NUM_TABS = 3;
+        public FragmentAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
+            super(fragmentManager, lifecycle);
         }
-        return true;
+
+        @NonNull
+        @Override
+        public Fragment createFragment(int position) {
+            // 根据位置返回对应的Fragment实例
+            switch (position) {
+                case 0:
+                    return LibraryListFragment.newInstance();
+                case 1:
+                    return WebViewFragment.newInstance();
+                case 2:
+//                    return TecentMapFragment.newInstance();
+
+            }
+            return LibraryListFragment.newInstance();
+        }
+
+        @Override
+        public int getItemCount() {
+            return NUM_TABS;
+        }
     }
-
-
-
-    public List<Book> getListBooks(){
-        List<Book> BookList = new ArrayList<>();
-        BookList.add(new Book("软件项目管理案例教程（第四版）",R.drawable.book_1));
-        BookList.add(new Book("创新工程实践",R.drawable.book_2));
-        BookList.add(new Book("信息安全数学基础（第二版）",R.drawable.book_3));
-        return BookList;
-    }
-
-
-
 
 }
 

@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class AddBook extends AppCompatActivity {
+    public static final int RESULT_CODE_SUCCESS = 666;
+    private int position;
     private ImageView coverImageView;
     private EditText titleEditText;
 
@@ -19,25 +21,30 @@ public class AddBook extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.addbook_layout);
-
+        position= this.getIntent().getIntExtra("position",0);
+        String title=this.getIntent().getStringExtra("title");
         // 初始化其他书籍信息的EditText
-        coverImageView = findViewById(R.id.image_cover);
-        titleEditText = findViewById(R.id.editText);
-
+        EditText editTextTitle=findViewById(R.id.editText);
+//        coverImageView = findViewById(R.id.image_cover);
+//        titleEditText = findViewById(R.id.editText);
+        if(null!=title)
+        {
+            editTextTitle.setText(title);
+        }
         // 设置添加按钮的点击事件
         Button addButton = findViewById(R.id.button_add);
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 // 创建一个包含书籍信息的Intent
-                Intent resultIntent = new Intent();
-                resultIntent.putExtra("title", titleEditText.getText().toString());
+                Intent intent = new Intent();
+                Bundle bundle=new Bundle();
+                bundle.putString("title",editTextTitle.getText().toString());
+                bundle.putInt("position",position);
 
-                // 设置结果码为RESULT_OK，表示成功添加书籍
-                setResult(Activity.RESULT_OK, resultIntent);
-
-                // 结束当前Activity，返回到上一个Activity
-                finish();
+                intent.putExtras(bundle);
+                setResult(RESULT_CODE_SUCCESS,intent);
+                AddBook.this.finish();
             }
         });
 
@@ -45,7 +52,7 @@ public class AddBook extends AppCompatActivity {
         Button backButton = findViewById(R.id.button_back);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 setResult(Activity.RESULT_CANCELED);
                 finish();
             }
