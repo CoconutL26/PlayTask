@@ -98,7 +98,11 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case 2:
                 //edit
-
+                Intent editIntent = new Intent(MainActivity.this, EditBook.class);
+                editIntent.putExtra("id",item.getOrder());
+                editIntent.putExtra("title", bookList.get(item.getOrder()).getTitle());
+                editIntent.putExtra("cover", bookList.get(item.getOrder()).getCoverResource());
+                editBookLauncher.launch(editIntent);
                 break;
             default:
                 return super.onContextItemSelected(item);
