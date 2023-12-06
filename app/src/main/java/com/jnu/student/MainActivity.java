@@ -1,33 +1,20 @@
 package com.jnu.student;
 
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.MenuItem;
-import android.widget.AdapterView;
-import android.widget.Toast;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class MainActivity extends AppCompatActivity {
-    private String []tabHeaderStrings = {"图书","新闻","地图"};
+    private String []tabHeaderStrings = {"任务","奖励","我"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -57,14 +44,14 @@ public class MainActivity extends AppCompatActivity {
             // 根据位置返回对应的Fragment实例
             switch (position) {
                 case 0:
-                    return LibraryListFragment.newInstance();
+                    return TaskFragment.newInstance();
                 case 1:
-                    return WebViewFragment.newInstance();
+                    return AwardFragment.newInstance();
                 case 2:
-                    return TencentMapFragment.newInstance();
+                    return MeFragment.newInstance();
 
             }
-            return LibraryListFragment.newInstance();
+            return TaskFragment.newInstance();
         }
 
         @Override
@@ -72,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
             return NUM_TABS;
         }
     }
+
 
 }
 

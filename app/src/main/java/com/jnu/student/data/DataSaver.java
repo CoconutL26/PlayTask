@@ -4,7 +4,8 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
-import com.jnu.student.Book;
+import com.jnu.student.Award;
+
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -13,7 +14,7 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 public class DataSaver {
-    public void Save(Context context, ArrayList<Book> data)
+    public void Save(Context context, ArrayList<Award> data)
     {
         try {
 
@@ -27,13 +28,13 @@ public class DataSaver {
         }
     }
     @NonNull
-    public ArrayList<Book> Load(Context context)
+    public ArrayList<Award> Load(Context context)
     {
-        ArrayList<Book> data=new ArrayList<>();
+        ArrayList<Award> data=new ArrayList<>();
         try {
             FileInputStream fileIn = context.openFileInput("mydata.dat");
             ObjectInputStream in = new ObjectInputStream(fileIn);
-            data = (ArrayList<Book>) in.readObject();
+            data = (ArrayList<Award>) in.readObject();
             in.close();
             fileIn.close();
         } catch (Exception e) {
