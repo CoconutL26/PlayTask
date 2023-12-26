@@ -6,4 +6,5 @@
     <string name="tab_caption_1_Book">Book</string>
     <string name="tab_caption_3_browser">Browser</string>
     <string name="tab_caption_2_map">Map</string>
+    <string name="title_activity_new_task">NewTask</string>
 </resources>

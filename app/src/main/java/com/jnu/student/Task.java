@@ -2,17 +2,20 @@ package com.jnu.student;
 
 import java.io.Serializable;
 
-public class Award implements Serializable {
-    // 私有字段，用于存储图书的标题和成就点数
+public class Task implements Serializable {
     private String title;
     private String label;
     private String times;
+    private String frequency;
     private int achievement;
-    public Award(String title, int achievement,String label,String times) {
+    private boolean isCheck;
+    public Task(String title, int achievement,String label,String times,String frequency,boolean isCheck) {
         this.achievement = achievement;
         this.title = title;
         this.label = label;
         this.times = times;
+        this.frequency = frequency;
+        this.isCheck = isCheck;
     }
 
     // 获取图书标题的方法
@@ -33,6 +36,9 @@ public class Award implements Serializable {
         return times;
     }
 
+    public String getFrequency(){return frequency;}
+    public boolean getIsCheck(){return isCheck;}
+
 
     // 设置图书标题的方法
     public void setTitle(String title) {
@@ -52,4 +58,6 @@ public class Award implements Serializable {
         this.times = times;
     }
 
+    public void setFrequency(String frequency){this.frequency = frequency;}
+    public void setIsCheck(boolean isCheck){this.isCheck = isCheck;}
 }

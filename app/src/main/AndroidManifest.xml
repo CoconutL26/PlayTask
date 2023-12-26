@@ -1,19 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
-<!--    &lt;!&ndash;腾讯地图 SDK 要求的权限(开始)&ndash;&gt;-->
-<!--    &lt;!&ndash;访问网络获取地图服务&ndash;&gt;-->
-<!--    <uses-permission android:name="android.permission.INTERNET"/>-->
-<!--    &lt;!&ndash;检查网络可用性&ndash;&gt;-->
-<!--    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>-->
-<!--    &lt;!&ndash; 访问WiFi状态 &ndash;&gt;-->
-<!--    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />-->
-<!--    &lt;!&ndash;需要外部存储写权限用于保存地图缓存&ndash;&gt;-->
-<!--    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>-->
-<!--    &lt;!&ndash;获取 device id 辨别设备&ndash;&gt;-->
-<!--    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>-->
-<!--    &lt;!&ndash;腾讯地图 SDK 要求的权限(结束)&ndash;&gt;-->
+    xmlns:tools="http://schemas.android.com/tools" >
 
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -24,24 +14,24 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyFirstApplication"
         android:usesCleartextTraffic="true"
-        tools:targetApi="31">
-<!--        <activity-->
-<!--            android:name=".EditBook"-->
-<!--            android:exported="false" />-->
+        tools:targetApi="31" >
         <activity
-            android:name=".NewAward"
+            android:name=".NewTask"
+            android:exported="false" />
+<!--        <service android:name=".BackgroundService"-->
+<!--            android:exported="false"/>-->
+        <activity
+            android:name=".UpdateAward"
             android:exported="false" />
         <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-<!--        <meta-data-->
-<!--            android:name="TencentMapSDK"-->
-<!--            android:value="CUHBZ-437KL-MXXPR-ED3WC-WETAJ-55BC5" />-->
     </application>
+
 </manifest>

@@ -1,24 +1,18 @@
 package com.jnu.student;
-
-
-import static android.app.Activity.RESULT_OK;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,7 +23,7 @@ import com.jnu.student.data.DataSaver;
 import java.util.ArrayList;
 
 public class AwardFragment extends Fragment {
-    private ArrayList<Award> awards = new ArrayList<>();
+    public static ArrayList<Award> awards = new ArrayList<>();
     public static final int MENU_ID_UPDATE = 1;
     public static final int MENU_ID_DELETE = 2;
     private AwardAdapter awardAdapter = new AwardAdapter(awards);
@@ -49,18 +43,22 @@ public class AwardFragment extends Fragment {
 
     }
 
+
+
     //新建奖励
     private ActivityResultLauncher<Intent> newAwardLauncher = registerForActivityResult(
             new ActivityResultContracts.StartActivityForResult()
             ,result -> {
                 if(null != result){
                     Intent intent=result.getData();
-                    if(result.getResultCode()==NewAward.RESULT_CODE_SUCCESS)
+                    if(result.getResultCode()== UpdateAward.RESULT_CODE_SUCCESS)
                     {
+                        //获取数据
                         Bundle bundle=intent.getExtras();
                         String title=bundle.getString("title");
                         int achieveCount=bundle.getInt("achieveCount");
-                        awards.add(0,new Award(title,achieveCount,"无","0/1"));
+                        String times=bundle.getString("times");
+                        awards.add(0,new Award(title,achieveCount,"无",times));
                         new DataSaver().Save(this.getContext(),awards);
                         awardAdapter.notifyItemInserted(0);
                     }
@@ -68,6 +66,29 @@ public class AwardFragment extends Fragment {
 
             }
     );
+    //修改奖励
+    private ActivityResultLauncher<Intent> editAwardLauncher = registerForActivityResult
+            (new ActivityResultContracts.StartActivityForResult()
+                    ,result -> {
+                        if(null!=result){
+                            Intent intent=result.getData();
+                            if(result.getResultCode()== UpdateAward.RESULT_CODE_SUCCESS)
+                            {
+                                String title = intent.getStringExtra("title");
+                                int achievement = intent.getIntExtra("achievement",0);
+                                String label = intent.getStringExtra("label");
+                                String times = intent.getStringExtra("times");
+                                int position = intent.getIntExtra("position",0);
+                                awards.get(position).setTitle(title);
+                                awards.get(position).setAchievement(achievement);
+                                awards.get(position).setTimes(times);
+                                if(label==null){    label="无";}
+                                awards.get(position).setLabel(label);
+                                new DataSaver().Save(this.getContext(),awards);
+                                awardAdapter.notifyItemChanged(position);
+                            }
+                        }
+                    });
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -87,8 +108,8 @@ public class AwardFragment extends Fragment {
             awards.add(new Award("追剧",20,"无","0/1"));
             awards.add(new Award("看电影",20,"无","0/1"));
         }
-        FloatingActionButton fabbutton = rootView.findViewById(R.id.button_ADD);
-        fabbutton.setOnClickListener(v->{
+        FloatingActionButton fabButton = rootView.findViewById(R.id.button_ADD);
+        fabButton.setOnClickListener(v->{
             AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
             builder.setItems(new CharSequence[]{"新建奖励", "排序"}, new DialogInterface.OnClickListener() {
                         @Override
@@ -96,7 +117,7 @@ public class AwardFragment extends Fragment {
                             // 根据选择执行相应的操作，比如跳转到另一个界面
                             if (which == 0) {
                                 // 选择了选项0
-                                Intent intent = new Intent(requireActivity(), NewAward.class);
+                                Intent intent = new Intent(requireActivity(), UpdateAward.class);
                                 newAwardLauncher.launch(intent);
                                 int a = 0;
                             } else if (which == 1) {
@@ -112,6 +133,41 @@ public class AwardFragment extends Fragment {
         recyclerViewMain.setAdapter(awardAdapter);
         return rootView;
     }
+    public boolean onContextItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case MENU_ID_UPDATE:
+                Intent intentUpdate = new Intent(this.getContext(), UpdateAward.class);
+                Award award= awards.get(item.getOrder());
+                intentUpdate.putExtra("position",item.getOrder());
+                intentUpdate.putExtra("title",award.getTitle());
+                intentUpdate.putExtra("achievement",award.getAchievement());
+                intentUpdate.putExtra("label",award.getLabel());
+                intentUpdate.putExtra("times",award.getTimes());
+                editAwardLauncher.launch(intentUpdate);
+                break;
+            case MENU_ID_DELETE:
+                AlertDialog.Builder builder = new AlertDialog.Builder(this.getContext());
+                builder.setTitle("删除");
+                builder.setMessage("你确定要删除吗?");
+                builder.setPositiveButton("是", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        awards.remove(item.getOrder());
+                        new DataSaver().Save(AwardFragment.this.getContext(),awards);
+                        awardAdapter.notifyItemRemoved(item.getOrder());
+                    }
+                });
+                builder.setNegativeButton("否", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+                builder.create().show();
+                break;
+
+        }
+        return super.onContextItemSelected(item);
+    }
 
     public static class AwardAdapter extends RecyclerView.Adapter<AwardAdapter.ViewHolder> {
         @NonNull
@@ -124,11 +180,13 @@ public class AwardFragment extends Fragment {
             private final TextView awardAchieveView;
             private final TextView awardTimes;
 
+
             public ViewHolder(View itemView) {
                 super(itemView);
                 awardAchieveView = itemView.findViewById(R.id.text_view_award_achieve);
                 awardTitleView = itemView.findViewById(R.id.text_view_award_title);
                 awardTimes = itemView.findViewById(R.id.text_view_award_times);
+
                 itemView.setOnCreateContextMenuListener(this);
             }
 
@@ -147,6 +205,7 @@ public class AwardFragment extends Fragment {
                 contextMenu.add(0,MENU_ID_DELETE,getAdapterPosition(),"删除");
             }
         }
+
         public AwardAdapter(ArrayList<Award> awardArrayList) {
 
             this.awardArrayList = awardArrayList;
@@ -170,6 +229,7 @@ public class AwardFragment extends Fragment {
             String achievementText = String.valueOf((-1)*award.getAchievement());
             viewHolder.awardAchieveView.setText(achievementText);
             viewHolder.awardTimes.setText(award.getTimes());
+
         }
 
         // Return the size of your dataset (invoked by the layout manager)

@@ -4,7 +4,7 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
-import com.jnu.student.Award;
+import com.jnu.student.Task;
 
 
 import java.io.FileInputStream;
@@ -13,12 +13,12 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
-public class DataSaver {
-    public static void Save(Context context, ArrayList<Award> data)
+public class TaskSaver {
+    public void Save(Context context, ArrayList<Task> data)
     {
         try {
 
-            FileOutputStream dataStream=context.openFileOutput("mydata.dat",Context.MODE_PRIVATE);
+            FileOutputStream dataStream=context.openFileOutput("taskData.dat",Context.MODE_PRIVATE);
             ObjectOutputStream out = new ObjectOutputStream(dataStream);
             out.writeObject(data);
             out.close();
@@ -28,13 +28,13 @@ public class DataSaver {
         }
     }
     @NonNull
-    public ArrayList<Award> Load(Context context)
+    public ArrayList<Task> Load(Context context)
     {
-        ArrayList<Award> data=new ArrayList<>();
+        ArrayList<Task> data=new ArrayList<>();
         try {
-            FileInputStream fileIn = context.openFileInput("mydata.dat");
+            FileInputStream fileIn = context.openFileInput("taskData.dat");
             ObjectInputStream in = new ObjectInputStream(fileIn);
-            data = (ArrayList<Award>) in.readObject();
+            data = (ArrayList<Task>) in.readObject();
             in.close();
             fileIn.close();
         } catch (Exception e) {

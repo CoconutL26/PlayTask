@@ -5,15 +5,22 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".UpdateAward">
-
+    tools:context=".NewTask">
     <!-- 第一行：编辑文本 -->
     <EditText
-        android:id="@+id/edit_award_title"
+        android:id="@+id/edit_task_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="text"
         android:hint="标题" />
+
+    <EditText
+        android:id="@+id/edit_task_achieve"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="成就点数"
+        android:inputType="number"
+        tools:ignore="TouchTargetSizeCheck" />
 
     <!-- 第二行：编辑文本和下拉框 -->
     <LinearLayout
@@ -22,16 +29,16 @@
         android:orientation="horizontal">
 
         <EditText
-            android:id="@+id/edit_award_achievement"
+            android:id="@+id/edit_task_times"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:hint="耗费的成就点数"
+            android:hint="数量（可选）"
             android:inputType="number"
             tools:ignore="TouchTargetSizeCheck" />
 
         <Spinner
-            android:id="@+id/spin_award_times"
+            android:id="@+id/spin_task_frequency"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="1dp"
@@ -43,28 +50,26 @@
     </LinearLayout>
 
     <EditText
-        android:id="@+id/edit_award_label"
+        android:id="@+id/edit_task_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="通过标签对任务进行分类"
         android:inputType="text"
         android:minHeight="48dp" />
-    <!-- 第三行：按钮 -->
+
+    <!-- 第四行：按钮 -->
     <Button
-        android:id="@+id/button_done"
+        android:id="@+id/button_task_done"
         android:layout_width="379dp"
         android:layout_height="wrap_content"
         android:text="完成"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"/>
     <Button
-        android:id="@+id/button_back"
+        android:id="@+id/button_task_back"
         android:layout_width="379dp"
         android:layout_height="wrap_content"
         android:text="返回"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"/>
-
-
-
 </LinearLayout>
