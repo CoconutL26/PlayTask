@@ -6,19 +6,18 @@ import androidx.annotation.NonNull;
 
 import com.jnu.student.Task;
 
-
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
-public class TaskSaver {
+public class NormalTaskSaver {
     public void Save(Context context, ArrayList<Task> data)
     {
         try {
 
-            FileOutputStream dataStream=context.openFileOutput("taskData.dat",Context.MODE_PRIVATE);
+            FileOutputStream dataStream=context.openFileOutput("normalTaskData.dat",Context.MODE_PRIVATE);
             ObjectOutputStream out = new ObjectOutputStream(dataStream);
             out.writeObject(data);
             out.close();
@@ -32,7 +31,7 @@ public class TaskSaver {
     {
         ArrayList<Task> data=new ArrayList<>();
         try {
-            FileInputStream fileIn = context.openFileInput("taskData.dat");
+            FileInputStream fileIn = context.openFileInput("normalTaskData.dat");
             ObjectInputStream in = new ObjectInputStream(fileIn);
             data = (ArrayList<Task>) in.readObject();
             in.close();

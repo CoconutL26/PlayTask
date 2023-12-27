@@ -22,10 +22,6 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
-import com.jnu.student.data.DataSaver;
-import com.jnu.student.data.TaskSaver;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -101,20 +97,20 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onPause() {
         super.onPause();
-        TaskSaver taskSaver = new TaskSaver();
-        ArrayList<Award> awards = AwardFragment.newInstance().awards;
-        ArrayList<Task> tasks = DayTaskFragment.newInstance().tasks;
-        taskSaver.Save(this, tasks);
-        DataSaver.Save(this,awards);
-        if (tasks != null) {
-            boolean notice_number = tasks.get(0).getIsCheck();
-            for (int i = 1; i < tasks.size(); i++) {
-                notice_number = notice_number || tasks.get(i).getIsCheck();
-            }
-            if (notice_number) {
-                sendNotification();
-            }
-        }
+//        TaskSaver taskSaver = new TaskSaver();
+//        ArrayList<Award> awards = AwardFragment.newInstance().awards;
+//        ArrayList<Task> tasks = DayTaskFragment.newInstance().tasks;
+//        taskSaver.Save(this, tasks);
+//        DataSaver.Save(this,awards);
+//        if (tasks != null) {
+//            boolean notice_number = tasks.get(0).getIsCheck();
+//            for (int i = 1; i < tasks.size(); i++) {
+//                notice_number = notice_number || tasks.get(i).getIsCheck();
+//            }
+//            if (notice_number) {
+//                sendNotification();
+//            }
+//        }
 
     }
 

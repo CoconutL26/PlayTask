@@ -28,4 +28,27 @@
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/total_score"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:text="TextView"
+        android:textSize="28dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginBottom="16dp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/button_ADD_day_task"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="16dp"
+        android:src="@drawable/add1"
+        tools:ignore="SpeakableTextPresentCheck"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        />
+
 </RelativeLayout>

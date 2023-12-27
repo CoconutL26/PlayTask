@@ -72,7 +72,9 @@ public class NewTask extends AppCompatActivity {
                     Toast.makeText(NewTask.this, message, Toast.LENGTH_SHORT).show();
                     return;
                 }
-
+                if(times.isEmpty()){
+                    times="1";
+                }
                 Intent intent = new Intent();
                 Bundle bundle = new Bundle();
 
@@ -81,7 +83,7 @@ public class NewTask extends AppCompatActivity {
                 bundle.putString("title", title);
                 bundle.putInt("achieveCount", achieveCount);
                 bundle.putString("frequency",input_task_frequency);
-                bundle.putString("times",times);
+                bundle.putInt("times",Integer.parseInt(times));
 //                bundle.putInt("position", position);
                 // 设置位置信息（如果有的话）
                 if (getIntent().hasExtra("position")) {
@@ -100,7 +102,13 @@ public class NewTask extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setResult(Activity.RESULT_CANCELED);
+                Intent intent = new Intent();
+
+                // 设置位置信息（如果有的话）
+                if (getIntent().hasExtra("position")) {
+                    intent.putExtra("position", getIntent().getIntExtra("position", 0));
+                }
+                setResult(Activity.RESULT_CANCELED,intent);
                 finish();
             }
         });

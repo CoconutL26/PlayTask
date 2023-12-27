@@ -12,6 +12,15 @@
         android:layout_height="match_parent"
         android:layout_alignParentTop="true"
         android:layout_marginTop="0dp" />
+    <TextView
+        android:id="@+id/total_score"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:text="TextView"
+        android:textSize="28dp"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="16dp"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/button_ADD"

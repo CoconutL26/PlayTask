@@ -12,13 +12,6 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="0dp" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/button_ADD_day_task"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:src="@drawable/add1"
-        tools:ignore="SpeakableTextPresentCheck" />
+
 
 </FrameLayout>

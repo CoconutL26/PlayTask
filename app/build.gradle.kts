@@ -31,6 +31,7 @@ android {
 }
 
 dependencies {
+    implementation("androidx.recyclerview:recyclerview:1.2.1")
     implementation("com.tencent.map:tencent-map-vector-sdk:4.3.4")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.9.0")
