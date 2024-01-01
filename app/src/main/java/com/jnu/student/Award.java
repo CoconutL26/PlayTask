@@ -8,11 +8,13 @@ public class Award implements Serializable {
     private String label;
     private String times;
     private int achievement;
-    public Award(String title, int achievement,String label,String times) {
+    private int done_times;
+    public Award(String title, int achievement,String label,String times,int done_times) {
         this.achievement = achievement;
         this.title = title;
         this.label = label;
         this.times = times;
+        this.done_times = done_times;
     }
 
     // 获取图书标题的方法
@@ -32,6 +34,7 @@ public class Award implements Serializable {
     public String getTimes() {
         return times;
     }
+    public int getDone_times(){return done_times;}
 
 
     // 设置图书标题的方法
@@ -51,5 +54,6 @@ public class Award implements Serializable {
     public void setTimes(String times) {
         this.times = times;
     }
+    public void setDone_times(int done_times){this.done_times = done_times;};
 
 }

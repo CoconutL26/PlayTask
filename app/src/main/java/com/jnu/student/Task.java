@@ -66,5 +66,5 @@ public class Task implements Serializable {
 
     public void setFrequency(String frequency){this.frequency = frequency;}
     public void setIsCheck(boolean isCheck){this.isCheck = isCheck;}
-    public void setDone_times(int done_times){this.done_times = done_times;};
+    public void setDone_times(int done_times){this.done_times = done_times;}
 }

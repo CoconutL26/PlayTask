@@ -61,7 +61,7 @@ public class AwardFragment extends Fragment implements AwardAdapter.OnItemClickL
                         String title = bundle.getString("title");
                         int achievement = bundle.getInt("achievement");
                         String times = bundle.getString("times");
-                        awards.add(0, new Award(title, achievement, "无", times));
+                        awards.add(0, new Award(title, achievement, "无", times,0));
                         awardAdapter.notifyItemInserted(0);
                     }
                 }
@@ -110,9 +110,9 @@ public class AwardFragment extends Fragment implements AwardAdapter.OnItemClickL
         awards = dataSaver.Load(this.getContext());
 
         if (0 == awards.size()) {
-            awards.add(new Award("打游戏", 20, "无", "0/1"));
-            awards.add(new Award("追剧", 20, "无", "0/1"));
-            awards.add(new Award("看电影", 20, "无", "0/1"));
+            awards.add(new Award("打游戏", 20, "无", "0/1",0));
+            awards.add(new Award("追剧", 20, "无", "0/1",0));
+            awards.add(new Award("看电影", 20, "无", "0/1",0));
         }
         FloatingActionButton fabButton = rootView.findViewById(R.id.button_ADD);
         fabButton.setOnClickListener(v -> {
@@ -204,6 +204,27 @@ public class AwardFragment extends Fragment implements AwardAdapter.OnItemClickL
 //                    TaskFragment.total_score_text.setTextColor(ContextCompat.getColor(getContext(),android.R.color.black));
 //                    total_score_text.setTextColor(ContextCompat.getColor(getContext(),android.R.color.black));
 //                }
+                String times=awards.get(position).getTimes();
+                int done_times=awards.get(position).getDone_times();
+                String donetimes=String.valueOf(done_times);
+                if(times.equals("0/1")){
+                    done_times++;
+                    times="1/1";
+                    awards.get(position).setTimes(times);
+                    awards.get(position).setDone_times(done_times);
+                    awards.remove(position);
+                    awardAdapter.notifyItemChanged(position);
+                    new DataSaver().Save(AwardFragment.this.getContext(), awards);
+                    awardAdapter.notifyItemRemoved(position);
+                }
+                else if(times.equals(donetimes+"/∞")){
+                    done_times++;
+                    donetimes=String.valueOf(done_times);
+                    times=donetimes+"/∞";
+                    awards.get(position).setDone_times(done_times);
+                    awards.get(position).setTimes(times);
+                    awardAdapter.notifyItemChanged(position);
+                }
             }
         });
         builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {

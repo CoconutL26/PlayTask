@@ -22,6 +22,12 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
+import com.jnu.student.data.DataSaver;
+import com.jnu.student.data.DayTaskSaver;
+import com.jnu.student.data.NormalTaskSaver;
+import com.jnu.student.data.WeekTaskSaver;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -97,20 +103,43 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onPause() {
         super.onPause();
-//        TaskSaver taskSaver = new TaskSaver();
-//        ArrayList<Award> awards = AwardFragment.newInstance().awards;
-//        ArrayList<Task> tasks = DayTaskFragment.newInstance().tasks;
-//        taskSaver.Save(this, tasks);
-//        DataSaver.Save(this,awards);
-//        if (tasks != null) {
-//            boolean notice_number = tasks.get(0).getIsCheck();
-//            for (int i = 1; i < tasks.size(); i++) {
-//                notice_number = notice_number || tasks.get(i).getIsCheck();
-//            }
-//            if (notice_number) {
-//                sendNotification();
-//            }
-//        }
+        DayTaskSaver daytaskSaver = new DayTaskSaver();
+        WeekTaskSaver weektaskSaver = new WeekTaskSaver();
+        NormalTaskSaver normaltaskSaver = new NormalTaskSaver();
+
+        ArrayList<Award> awards = AwardFragment.awards;
+        ArrayList<Task> dayTasks = DayTaskFragment.dayTasks;
+        ArrayList<Task> weekTasks = WeekTaskFragment.weekTasks;
+        ArrayList<Task> normalTasks = NormalTaskFragment.normalTasks;
+
+        daytaskSaver.Save(this, dayTasks);
+        weektaskSaver.Save(this, weekTasks);
+        normaltaskSaver.Save(this, normalTasks);
+        DataSaver.Save(this,awards);
+        boolean notice_number1=false;
+        boolean notice_number2=false;
+        boolean notice_number3=false;
+        if (dayTasks != null) {
+            notice_number1 = dayTasks.get(0).getIsCheck();
+            for (int i = 1; i < dayTasks.size(); i++) {
+                notice_number1 = notice_number1 || dayTasks.get(i).getIsCheck();
+            }
+        }
+        if (weekTasks != null) {
+            notice_number2 = weekTasks.get(0).getIsCheck();
+            for (int i = 1; i < weekTasks.size(); i++) {
+                notice_number2 = notice_number2 || weekTasks.get(i).getIsCheck();
+            }
+        }
+        if (normalTasks != null) {
+            notice_number3 = normalTasks.get(0).getIsCheck();
+            for (int i = 1; i < normalTasks.size(); i++) {
+                notice_number3 = notice_number3 || normalTasks.get(i).getIsCheck();
+            }
+        }
+        if (notice_number1 || notice_number2 || notice_number3) {
+            sendNotification();
+        }
 
     }
 
